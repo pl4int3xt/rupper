@@ -2,7 +2,7 @@ use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use sha2::{Sha256, Digest};
-use md5::{Md5, Digest};
+//use md5::{Md5, Digest};
 use std::process::exit;
 
 fn main() {
@@ -13,6 +13,7 @@ fn main() {
         exit(1);
     }
 
+    // let hash_type: &String = &args[1];
     let hash: &String = &args[1];
     let password_file: &String = &args[2];
     let mut attempts: i32 = 1;
@@ -25,6 +26,11 @@ fn main() {
         let line: String = line.unwrap();
         let password: Vec<u8> = line.trim().to_owned().into_bytes();
         let password_hash: String = format!("{:x}", Sha256::digest(&password));
+        // if hash_type == "Sha256"{
+        //     let password_hash: String = format!("{:x}", Sha256::digest(&password));
+        // } else {
+        //     let password_hash: String = format!("{:x}",  Md5::digest(&password));
+        // }
         println!("[{}] {} == {}", attempts, std::str::from_utf8(&password).unwrap(), password_hash);
 
         if &password_hash == hash {
