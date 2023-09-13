@@ -20,11 +20,6 @@ fn main() {
     let password_list = File::open(password_file).unwrap();
     let reader: BufReader<File> = BufReader::new(password_list);
 
-    utils::utils::crack_password(
-        &hash,
-        &verbose,
-        &hash_type,
-        reader
-    )
+    utils::utils::crack_password(&hash,&verbose,&hash_type,reader)
 
 }
