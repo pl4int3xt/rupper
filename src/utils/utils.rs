@@ -7,8 +7,8 @@ use crate::handlers::handlers::{assign_algorithm_type, digest};
 
 pub fn invalid_arguments(args: &Vec<String>){
     if args.len() != 5 {
-        println!("Invalid amount of arguments");
-        println!("Example: cargo run <algorithm> <sha256 hash> <pass list> <verbose> <threads>");
+        println!("Invalid amount of arguments\n");
+        println!("Example: ./rupper <algorithm> <sha256 hash> <pass list> <verbose> <threads>\n");
         println!("Algorithms: <sha1> <sha256> <md2> <md4> <md5>");  
         exit(1);
     }
@@ -34,6 +34,7 @@ pub fn check_verbose(verbose: &str, attempts: &i32, password: &Vec<u8>, password
 }
 
 pub fn crack_password(hash:&String, verbose: &str, hash_type: &str, reader: BufReader<File>){
+    println!("Attempting to crack {}\n", hash);
     let mut attempts: i32 = 1;
     for line in reader.lines(){
         let line: String = line.unwrap();
@@ -49,11 +50,11 @@ pub fn crack_password(hash:&String, verbose: &str, hash_type: &str, reader: BufR
         check_verbose(verbose, &attempts, &password, &password_hash); 
     
         if &password_hash == hash {
-            println!("Password found");
-            println!("-----------------------------------------------------------------------------------");
-            println!("Attempts [{}]", attempts);
-            println!("Password [{}]", std::str::from_utf8(&password).unwrap());
-            println!("Hash [{}]", password_hash);
+            println!("Password found\n");
+            println!("-----------------------------------------------------------------------------------\n");
+            println!("Attempts [{}]\n", attempts);
+            println!("Password [{}]\n", std::str::from_utf8(&password).unwrap());
+            println!("Hash [{}]\n", password_hash);
             println!("-----------------------------------------------------------------------------------");
             break;
         }

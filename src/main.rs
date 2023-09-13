@@ -15,8 +15,6 @@ fn main() {
     let hash: &String = &args[2];
     let password_file: &String = &args[3];
     let verbose: &String = &args[4];
-
-    println!("Attempting to crack {}", hash);
     let password_list = File::open(password_file).unwrap();
     let reader: BufReader<File> = BufReader::new(password_list);
 
