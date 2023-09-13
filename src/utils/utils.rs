@@ -5,6 +5,11 @@ pub fn banner(banner: &str){
         Ok(string) => println!("{}", string),
         Err(err) => println!("Error: {}", err)   
     }
+    println!("");
+    println!(" -------------------");
+    println!("| Author: <Myst3ry> |");
+    println!(" -------------------");
+    println!("");
 }
 
 pub fn check_verbose(verbose: &str, attempts: &i32, password: &Vec<u8>, password_hash: &str){
