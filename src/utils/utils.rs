@@ -1,9 +1,18 @@
 use text_to_ascii_art::convert;
-use std::fs::File;
 use std::io::{BufRead, BufReader};
+use std::process::exit;
+use std::fs::File;
 use crate::algorithm::algorithm::HashAlgorithm;
 use crate::handlers::handlers::{assign_algorithm_type, digest};
 
+pub fn invalid_arguments(args: &Vec<String>){
+    if args.len() != 5 {
+        println!("Invalid amount of arguments");
+        println!("Example: cargo run <algorithm> <sha256 hash> <pass list> <verbose> <threads>");
+        println!("Algorithms: <sha1> <sha256> <md2> <md4> <md5>");  
+        exit(1);
+    }
+}
 pub fn banner(banner: &str){
     match convert(banner.to_string()) {
         Ok(string) => println!("{}", string),
@@ -24,10 +33,8 @@ pub fn check_verbose(verbose: &str, attempts: &i32, password: &Vec<u8>, password
     }
 }
 
-pub fn crack_password(password_file: &String, hash:&String, verbose: &str, hash_type: &str){
+pub fn crack_password(hash:&String, verbose: &str, hash_type: &str, reader: BufReader<File>){
     let mut attempts: i32 = 1;
-    let password_list = File::open(password_file).unwrap();
-    let reader: BufReader<File> = BufReader::new(password_list);
     for line in reader.lines(){
         let line: String = line.unwrap();
         let password: Vec<u8> = line.trim().to_owned().into_bytes();
