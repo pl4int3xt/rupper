@@ -315,6 +315,7 @@ dependencies = [
  "sha2",
  "sha256",
  "shabal",
+ "text-to-ascii-art",
  "tiger",
  "whirlpool",
 ]
@@ -385,6 +386,12 @@ dependencies = [
  "quote",
  "unicode-ident",
 ]
+
+[[package]]
+name = "text-to-ascii-art"
+version = "0.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fff85e7ccbae668e075f262a80e7315b399cb07fb5dc7ae1cd7261c80d007976"
 
 [[package]]
 name = "tiger"

@@ -3,15 +3,17 @@ use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::process::exit;
 
+mod utils;
 mod algorithm;
 mod handlers;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+    utils::utils::banner("Rupper");
 
-    if args.len() != 4 {
+    if args.len() != 5 {
         println!("Invalid amount of arguments");
-        println!("Example: cargo run <algorithm> <sha256 hash> <pass list>");
+        println!("Example: cargo run <algorithm> <sha256 hash> <pass list> <verbose>");
         println!("Algorithms: <sha1> <sha256> <md2> <md4> <md5>");
         exit(1);
     }
@@ -19,6 +21,7 @@ fn main() {
     let hash_type: &String = &args[1];
     let hash: &String = &args[2];
     let password_file: &String = &args[3];
+    let verbose: &String = &args[4];
     let mut attempts: i32 = 1;
 
     println!("Attempting to crack {}", hash);
@@ -36,15 +39,19 @@ fn main() {
             break;
         }
 
-        println!("[{}] {} == {}", attempts, std::str::from_utf8(&password).unwrap(), password_hash);
-
+        utils::utils::check_verbose(verbose, &attempts, &password, &password_hash); 
+    
         if &password_hash == hash {
-            println!("Password found after {} attempts! {} hashes to {}!", attempts, std::str::from_utf8(&password).unwrap(), password_hash);
+            println!("Password found");
+            println!("-----------------------------------------------------------------------------------");
+            println!("Attempts [{}]", attempts);
+            println!("Password [{}]", std::str::from_utf8(&password).unwrap());
+            println!("Hash [{}]", password_hash);
+            println!("-----------------------------------------------------------------------------------");
             break;
         }
 
         attempts +=1;
     }
-    
-    println!("Not found");
+
 }
