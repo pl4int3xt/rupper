@@ -2,6 +2,8 @@ use sha2::{Sha256, Digest};
 use sha1::Sha1;
 use md2::Md2;
 use md4::Md4;
+use md5;
+
 use crate::algorithm::algorithm::HashAlgorithm;
 
 pub fn assign_algorithm_type(hash_type: &str) -> HashAlgorithm {
@@ -10,6 +12,7 @@ pub fn assign_algorithm_type(hash_type: &str) -> HashAlgorithm {
         "sha256" => HashAlgorithm::Sha256, 
         "md4" => HashAlgorithm::Md4,
         "sha1" => HashAlgorithm::Sha1,
+        "md5" => HashAlgorithm::Md5,
         _ => HashAlgorithm::Invalid
     }
 }
@@ -28,6 +31,7 @@ pub fn digest(hash_algorithm: &HashAlgorithm, password: &Vec<u8>) -> String {
             format!("{:x}", md4.finalize())
         },
         HashAlgorithm::Sha1 => format!("{:x}", Sha1::digest(password)),
-        HashAlgorithm::Invalid => "Invalid algorithm".to_string()
+        HashAlgorithm::Invalid => "Invalid algorithm".to_string(),
+        HashAlgorithm::Md5 => format!("{:x}", md5::compute(password))          
     }
 }

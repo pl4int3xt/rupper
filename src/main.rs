@@ -12,6 +12,7 @@ fn main() {
     if args.len() != 4 {
         println!("Invalid amount of arguments");
         println!("Example: cargo run <algorithm> <sha256 hash> <pass list>");
+        println!("Algorithms: <sha1> <sha256> <md2> <md4> <md5>");
         exit(1);
     }
 
@@ -27,16 +28,14 @@ fn main() {
     for line in reader.lines(){
         let line: String = line.unwrap();
         let password: Vec<u8> = line.trim().to_owned().into_bytes();
-        let password_hash: String;
-        let hash_algorithm: algorithm::algorithm::HashAlgorithm;
-
-        hash_algorithm = handlers::handlers::assign_algorithm_type(hash_type);
-        password_hash = handlers::handlers::digest(&hash_algorithm, &password);
+        let hash_algorithm: algorithm::algorithm::HashAlgorithm = handlers::handlers::assign_algorithm_type(hash_type);
+        let password_hash: String = handlers::handlers::digest(&hash_algorithm, &password);
         
         if password_hash == "Invalid algorithm"{
             println!("Invalid algorithm");
             break;
         }
+
         println!("[{}] {} == {}", attempts, std::str::from_utf8(&password).unwrap(), password_hash);
 
         if &password_hash == hash {
