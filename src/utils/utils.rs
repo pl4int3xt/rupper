@@ -1,9 +1,29 @@
 use text_to_ascii_art::convert;
 use std::io::{BufRead, BufReader};
 use std::fs::File;
+use clap::Parser;
 use crate::algorithm::algorithm::HashAlgorithm;
 use crate::handlers::handlers::{assign_algorithm_type, digest};
 
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+pub struct Args{
+    /// Name of algorithm [sha1, sha256, md2, md4, md5]
+    #[arg(short, long)]
+    pub algorithm: String,
+
+    /// The hash value
+    #[arg(short, long)]
+    pub input: String,
+
+    /// password list 
+    #[arg(short, long)]
+    pub password_list: String,
+
+    /// verbose
+    #[arg(short, long, default_value_t = 1)]
+    pub verbose : u8,
+}
 
 pub fn banner(banner: &str){
     match convert(banner.to_string()) {
