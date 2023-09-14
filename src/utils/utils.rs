@@ -1,18 +1,10 @@
 use text_to_ascii_art::convert;
 use std::io::{BufRead, BufReader};
-use std::process::exit;
 use std::fs::File;
 use crate::algorithm::algorithm::HashAlgorithm;
 use crate::handlers::handlers::{assign_algorithm_type, digest};
 
-pub fn invalid_arguments(args: &Vec<String>){
-    if args.len() != 5 {
-        println!("Invalid amount of arguments\n");
-        println!("Example: ./rupper <algorithm> <sha256 hash> <pass list> <verbose> <threads>\n");
-        println!("Algorithms: <sha1> <sha256> <md2> <md4> <md5>");  
-        exit(1);
-    }
-}
+
 pub fn banner(banner: &str){
     match convert(banner.to_string()) {
         Ok(string) => println!("{}", string),
@@ -25,15 +17,15 @@ pub fn banner(banner: &str){
     println!("");
 }
 
-pub fn check_verbose(verbose: &str, attempts: &i32, password: &Vec<u8>, password_hash: &str){
+pub fn check_verbose(verbose: &u8, attempts: &i32, password: &Vec<u8>, password_hash: &str){
     match verbose {
-        "true" => println!("[{}] [{}] == [{}]", attempts, std::str::from_utf8(&password).unwrap(), password_hash),
-        "false" => {},
+        1 => println!("[{}] [{}] == [{}]", attempts, std::str::from_utf8(&password).unwrap(), password_hash),
+        0 => {},
         _ => println!("Invalid verbose mode")
     }
 }
 
-pub fn crack_password(hash:&String, verbose: &str, hash_type: &str, reader: BufReader<File>){
+pub fn crack_password(hash:&String, verbose: &u8, hash_type: &str, reader: BufReader<File>){
     println!("Attempting to crack {}\n", hash);
     let mut attempts: i32 = 1;
     for line in reader.lines(){
